@@ -2,3 +2,4 @@ node_modules/
 dist/
 *.vsix
 npm-debug.log*
+AGENTS.md
