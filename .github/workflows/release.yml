@@ -1,0 +1,50 @@
+name: Build and Release VSIX
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+permissions:
+  contents: write
+
+jobs:
+  build-release:
+    name: Build, test, and publish release asset
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build VSIX
+        run: npm run package
+
+      - name: Upload VSIX artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: cursor-env-switcher-vsix
+          path: "*.vsix"
+          if-no-files-found: error
+
+      - name: Create GitHub release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ github.ref_name }}-${{ github.run_number }}
+          name: ${{ github.ref_name }} build ${{ github.run_number }}
+          files: "*.vsix"
+          prerelease: ${{ github.ref_name != 'main' }}
+          generate_release_notes: true

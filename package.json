@@ -1,0 +1,41 @@
+{
+  "name": "cursor-env-switcher",
+  "displayName": "Cursor Env Switcher",
+  "description": "Toggle the active workspace .env file between development and production from the Cursor status bar.",
+  "version": "0.1.0",
+  "publisher": "local",
+  "type": "commonjs",
+  "license": "MIT",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onCommand:envSwitcher.toggle"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "envSwitcher.toggle",
+        "title": "Env Switcher: Toggle Environment"
+      }
+    ]
+  },
+  "scripts": {
+    "compile": "tsc -p .",
+    "test": "npm run compile && mocha \"dist/**/*.test.js\"",
+    "package": "npm run compile && vsce package --allow-missing-repository"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.12.12",
+    "@types/vscode": "^1.85.0",
+    "mocha": "^10.7.3",
+    "typescript": "^5.6.3",
+    "@vscode/vsce": "^3.9.1"
+  }
+}
